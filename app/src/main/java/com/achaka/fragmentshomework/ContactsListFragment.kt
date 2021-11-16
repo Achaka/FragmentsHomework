@@ -1,12 +1,15 @@
 package com.achaka.fragmentshomework
 
+import android.database.Cursor
 import android.os.Bundle
+import android.provider.ContactsContract
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.replace
+import androidx.loader.app.LoaderManager
+import androidx.loader.content.Loader
 import com.achaka.fragmentshomework.databinding.FragmentContactsListBinding
 
 // TODO: Rename parameter arguments, choose names that match
@@ -19,7 +22,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [ContactsListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ContactsListFragment : Fragment() {
+class ContactsListFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
     // TODO: Rename and change types of parameters
     val contacts =  ArrayList<Contact>()
 
@@ -29,6 +32,7 @@ class ContactsListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         contacts.add(Contact("Anme", "", "+7981"))
+        LoaderManager.getInstance(this).initLoader(0, null, this)
         arguments?.let {
 //            param1 = it.getString(CONTACT_NAME_KEY)
             param2 = it.getString(ARG_PARAM2)
@@ -46,10 +50,15 @@ class ContactsListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val parentFragmentManager = parentFragmentManager
+
+        val contentResolver = requireActivity().contentResolver
+        val cursor: Cursor?
+
+        cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI,null,null,null,null)
+        cursor?.close()
     }
 
-    fun addNewContact(binding: FragmentContactsListBinding, contact: Contact) {
+    private fun addNewContact(binding: FragmentContactsListBinding, contact: Contact) {
         val linearLayout = binding.linearLayoutContactsList
         val scale = resources.displayMetrics.density
         val paddingDp = (resources.getDimension(R.dimen.padding)/scale).toInt()
@@ -88,5 +97,17 @@ class ContactsListFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
+        TODO("Not yet implemented")
+    }
+
+    override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onLoaderReset(loader: Loader<Cursor>) {
+        TODO("Not yet implemented")
     }
 }
