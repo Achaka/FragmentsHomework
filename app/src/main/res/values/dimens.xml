@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="padding">16dp</dimen>
+    <dimen name="phone_padding_top">4dp</dimen>
+    <dimen name="contact_name_text_size">18sp</dimen>
+    <dimen name="contact_phone_number_text_size">12sp</dimen>
+</resources>
