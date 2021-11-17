@@ -1,10 +1,12 @@
 package com.achaka.fragmentshomework
 
+import android.os.Build
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.add
 
-class MainActivity : FragmentActivity() {
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -14,6 +16,5 @@ class MainActivity : FragmentActivity() {
             .setReorderingAllowed(true)
             .add<ContactsListFragment>(R.id.contacts_fragment_container_view)
             .commit()
-
     }
 }

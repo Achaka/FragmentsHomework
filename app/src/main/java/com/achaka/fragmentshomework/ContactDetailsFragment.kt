@@ -1,50 +1,51 @@
 package com.achaka.fragmentshomework
 
 import android.os.Bundle
+import android.text.InputType
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import com.achaka.fragmentshomework.databinding.FragmentContactDetailsBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ContactDetailsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ContactDetailsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var contactName: String? = null
-    private var contactSurname: String? = null
-    private var contactPhone: String? = null
-    private var param1: String? = null
-    private var param2: String? = null
-
+    private var name: String? = null
+    private var phone: String? = null
+    private lateinit var binding: FragmentContactDetailsBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         arguments?.let {
-            contactName = it.getString(CONTACT_NAME_KEY)
-//            contactSurname = it.getString(CONTACT_NAME_KEY)
-//            contactPhone = it.getString(CONTACT_NAME_KEY)
-            param2 = it.getString(ARG_PARAM2)
+            name = it.getString(CONTACT_NAME_KEY)
+            phone = it.getString(CONTACT_PHONE_NUMBER_KEY)
         }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        val binding = FragmentContactDetailsBinding.inflate(inflater, container, false)
-        binding.contactName.text = param1
+    ): View {
+
+        binding = FragmentContactDetailsBinding.inflate(inflater, container, false)
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val contactName = binding.contactName
+        val contactPhone = binding.contactPhone
+
+        contactName.setText(name, TextView.BufferType.EDITABLE)
+        contactName.setBackgroundResource(android.R.color.transparent)
+        contactName.inputType = InputType.TYPE_NULL
+
+        contactPhone.setText(phone, TextView.BufferType.EDITABLE)
+        contactPhone.setBackgroundResource(android.R.color.transparent)
+        contactPhone.inputType = InputType.TYPE_NULL
     }
 
     companion object {
@@ -65,5 +66,23 @@ class ContactDetailsFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.edit_contact_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.edit_contact -> {
+                binding.contactName.inputType = InputType.TYPE_CLASS_TEXT
+                binding.contactPhone.inputType = InputType.TYPE_CLASS_PHONE
+            }
+            R.id.save_contact -> {
+
+            }
+        }
+        return true
     }
 }
